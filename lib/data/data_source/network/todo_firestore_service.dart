@@ -1,8 +1,8 @@
 import 'package:hive/hive.dart';
-import '../../../model/todo.dart';
-import '../todo_data_service.dart';
+import 'package:todo_app/data/data_source/todo_data_service.dart';
+import 'package:todo_app/model/todo.dart';
 
-class TodoDbService implements TodoDataService{
+class TodoFirestoreService implements TodoDataService{
   late Box box;
 
   TodoProvider(){
@@ -34,7 +34,5 @@ class TodoDbService implements TodoDataService{
   Future<void> deleteAllTodos() async{
     await box.clear();
   }
-
+  
 }
-
-
