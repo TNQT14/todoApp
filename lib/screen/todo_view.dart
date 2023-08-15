@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../provider/todo_provider.dart';
+import '../widget/todo_card.dart';
+import '../widget/todo_form_screen.dart';
 
 class TodoView extends StatefulWidget {
   const TodoView({super.key});
@@ -26,7 +31,17 @@ class _TodoViewState extends State<TodoView> {
         elevation: 0,
       ),
       floatingActionButton: FloatingActionButton.large(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => ChangeNotifierProvider.value(
+                value: context.read<TodoProvider>(),
+                child: const TodoFormScreen(),
+              ),
+            ),
+          );
+        },
         child: const Icon(Icons.add),
       ),
       body: Container(
@@ -37,7 +52,56 @@ class _TodoViewState extends State<TodoView> {
           ),
         ),
         child: SafeArea(
-          child: Container(),
+          child: Consumer<TodoProvider>(
+            builder: (context, provider, _) {
+              return Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: provider.todos.isEmpty
+                    ? const Center(
+                  child: Text('No todos added yet.'),
+                )
+                    : RefreshIndicator(
+                  onRefresh: () async {
+                    context.read<TodoProvider>().init();
+                  },
+                  child: ListView.builder(
+                      itemCount: provider.todos.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final todo = provider.todos[index];
+                        return TodoCardScreen(
+                            todo: todo,
+                            onTap: (todo) {
+                              todo.complete = !todo.complete;
+                              context
+                                  .read<TodoProvider>()
+                                  .update(todo);
+                            },
+                            onDelete: (todo) {
+                              context
+                                  .read<TodoProvider>()
+                                  .removeTodo(todo);
+                            },
+                            onEdit: (todo) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      fullscreenDialog: true,
+                                      builder: (_) {
+                                        return ChangeNotifierProvider<
+                                            TodoProvider>.value(
+                                          value: context
+                                              .read<TodoProvider>(),
+                                          child: TodoFormScreen(
+                                            todo: todo,
+                                          ),
+                                        );
+                                      }));
+                            });
+                      }),
+                ),
+              );
+            },
+          ),
         ),
       )
     );
