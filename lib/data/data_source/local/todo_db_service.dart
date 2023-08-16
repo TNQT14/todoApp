@@ -1,11 +1,11 @@
 import 'package:hive/hive.dart';
 import '../../../model/todo.dart';
-import '../todo_data_service.dart';
+import '../../todo_data_service.dart';
 
 class TodoDbService implements TodoDataService{
   late Box box;
 
-  TodoProvider(){
+  TodoDbService(){
     _initHive();
   }
 
@@ -28,6 +28,7 @@ class TodoDbService implements TodoDataService{
 
   @override
   Future<void> updateTodo(Todo todo) async{
+    await box.put(todo.id, todo);
   }
 
   @override
@@ -36,5 +37,3 @@ class TodoDbService implements TodoDataService{
   }
 
 }
-
-

@@ -16,6 +16,7 @@ class _TodoViewState extends State<TodoView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
@@ -56,11 +57,9 @@ class _TodoViewState extends State<TodoView> {
             builder: (context, provider, _) {
               return Padding(
                 padding: const EdgeInsets.all(10.0),
-                child: provider.todos.isEmpty
-                    ? const Center(
+                child: provider.todos.isEmpty ? const Center(
                   child: Text('No todos added yet.'),
-                )
-                    : RefreshIndicator(
+                ) : RefreshIndicator(
                   onRefresh: () async {
                     context.read<TodoProvider>().init();
                   },

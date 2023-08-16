@@ -1,4 +1,4 @@
-import '../../model/todo.dart';
+import '../model/todo.dart';
 
 abstract class TodoDataService{
   Future<List<Todo>> getTodos();

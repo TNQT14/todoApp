@@ -1,5 +1,4 @@
 import 'package:hive/hive.dart';
-import 'dart:io';
 import 'package:hive_flutter/hive_flutter.dart';
 part 'todo.g.dart';
 
@@ -22,6 +21,23 @@ class Todo{
         required this.description,
         required this.complete});
 
-  @override
-  String toString() => '$id: $title: $description: $complete';
+  // @override
+  // String toString() => '$id: $title: $description: $complete';
+  factory Todo.fromJson(Map<String, dynamic> json) {
+    return Todo(
+      id: json['id'] as String,
+      title: json['title'] as String,
+      description: json['description'] as String,
+      complete: json['completed'] as bool,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'description': description,
+      'completed': complete,
+    };
+  }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
 import '../model/todo.dart';
+import '../provider/todo_provider.dart';
 
 class TodoFormScreen extends StatefulWidget {
   const TodoFormScreen({super.key, this.todo});
@@ -16,6 +17,14 @@ class _TodoFormScreenState extends State<TodoFormScreen> {
   final _formKey = GlobalKey<FormState>();
   String? _title;
   String? _description;
+
+  @override
+  void initState() {
+    _title = widget.todo?.title;
+    _description = widget.todo?.description;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +55,7 @@ class _TodoFormScreenState extends State<TodoFormScreen> {
                     validator: (value) => (value?.isEmpty ?? true)
                         ? 'Description is required'
                         : null,
-                    maxLines: 4,
+                    // maxLines: 4,
                     onChanged: (val) => _description = val,
                     decoration: const InputDecoration(labelText: 'Description'),
                   ),
@@ -78,8 +87,12 @@ class _TodoFormScreenState extends State<TodoFormScreen> {
         id: widget.todo?.id ?? DateTime.now().toIso8601String(),
         complete: widget.todo?.complete ?? false,
       );
+
+      widget.todo == null
+          ? context.read<TodoProvider>().addTodo(todo)
+          : context.read<TodoProvider>().update(todo);
+
       Navigator.pop(context);
     }
   }
 }
-

@@ -9,15 +9,6 @@ class TodoRepositoryImpl implements TodoRepository{
   late TodoDbService _todoDbService;
   late TodoFirestoreService _todoFirestoreService;
 
-  late Box box;
-
-  TodoProvider(){
-    _initHive();
-  }
-
-  _initHive() async{
-    box = Hive.box<Todo>('todos');
-  }
 
   TodoRepositoryImpl(
       {TodoDbService? todoDbService,
@@ -26,30 +17,39 @@ class TodoRepositoryImpl implements TodoRepository{
         _todoFirestoreService = todoFirestoreService ?? TodoFirestoreService();
 
   @override
-  Future<void> addTodo(Todo todo) async{
-    await box.put(todo.id, todo);
-  }
-
-  @override
-  Future<void> deleteTodo(Todo todo) async{
-    await box.delete(todo.id);
-  }
-
-  @override
-  Future<void> updateTodo(Todo todo) async{
-  }
-
-  @override
-  Future<void> deleteAllTodos() async{
-    await box.clear();
-  }
-
-  @override
   Future<List<Todo>> getAllTodos() {
       return _todoFirestoreService
           .getTodos()
           .catchError((error) => _todoDbService.getTodos())
           .then((value) => value);
+  }
+
+  @override
+  Future<void> addTodo(Todo todo) async {
+    _todoFirestoreService.addTodo(todo).catchError((error) {
+      _todoDbService.addTodo(todo);
+    }).then((value) => value);
+  }
+
+  @override
+  Future<void> deleteAllTodos() async {
+    _todoDbService.deleteAllTodos().catchError((e) {
+      print("add local database err :: ${e}");
+    });
+  }
+
+  @override
+  Future<void> deleteTodo(Todo todo) async {
+    _todoFirestoreService.deleteTodo(todo).catchError((e){
+      _todoDbService.deleteTodo(todo);
+    }).then((value) => print("todo Deleted"),);
+  }
+
+  @override
+  Future<void> updateTodo(Todo todo) async {
+    _todoFirestoreService.updateTodo(todo).catchError((e){
+      _todoDbService.updateTodo(todo);
+    }).then((value) => print("todo Updated"),);
   }
   
 }

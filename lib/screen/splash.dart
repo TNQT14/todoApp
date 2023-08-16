@@ -28,7 +28,6 @@ class _SplashScreenState extends State<SplashScreen>
         );
       }
     });
-
     super.initState();
   }
   @override
