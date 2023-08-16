@@ -4,9 +4,6 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:todo_app/screen/splash.dart';
-import 'package:todo_app/screen/todo_screen.dart';
-import 'package:todo_app/screen/todo_view.dart';
-import 'package:todo_app/widget/todo_form_screen.dart';
 
 import 'firebase.dart';
 import 'model/todo.dart';

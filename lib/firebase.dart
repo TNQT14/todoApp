@@ -16,14 +16,9 @@ import 'package:flutter/foundation.dart'
 /// ```
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
-    if (kIsWeb) {
-      return web;
-    }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
-      case TargetPlatform.iOS:
-        return ios;
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -46,16 +41,13 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAEx4oai1vqgj3vJqTxy-ZChUWGA-6XduU',
-    appId: '1:678652111557:web:9005f169a8173f1dac1eac',
-    messagingSenderId: '678652111557',
-    projectId: 'test-todos-app',
-    authDomain: 'test-todos-app.firebaseapp.com',
-    storageBucket: 'test-todos-app.appspot.com',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
+    // apiKey: 'AIzaSyBoKrQwFbgSyBUZ3mL6nmQdzYL8NT_hNZg',
+    // appId: '1:709321081165:android:963ca36d3ecc1e3358f704',
+    // messagingSenderId: '709321081165',
+    // projectId: 'todo-app-18e97',
+    // storageBucket: 'todo-app-18e97.appspot.com',
+
     apiKey: 'AIzaSyDYYlI7gBerelcr6ByleO3SlqEVug58dkY',
     appId: '1:678652111557:android:6cebb869a9cbaf0eac1eac',
     messagingSenderId: '678652111557',
@@ -63,13 +55,4 @@ class DefaultFirebaseOptions {
     storageBucket: 'test-todos-app.appspot.com',
   );
 
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyC0fQ36ri-lD4elv7rNA7cAXAReMQeb4Xk',
-    appId: '1:678652111557:ios:7d23046a33319324ac1eac',
-    messagingSenderId: '678652111557',
-    projectId: 'test-todos-app',
-    storageBucket: 'test-todos-app.appspot.com',
-    iosClientId: '678652111557-53tmcejvk8lcahd4evce8rhpsvem7rp5.apps.googleusercontent.com',
-    iosBundleId: 'com.example.toDo',
-  );
 }
